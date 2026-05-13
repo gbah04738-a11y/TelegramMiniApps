@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Mini App Monetizado</title>
+    <!-- SDK do Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        body {
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #222222);
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bem-vindo ao Mini App</h1>
+    <p>Clique abaixo para ver uma oferta (anúncio):</p>
+    
+    <button id="adButton">Ganhar Recompensa</button>
+
+    <script>
+        // Inicializa o WebApp do Telegram
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand(); // Expande o app para a tela cheia
+
+        // Função para simular a chamada da Monetag
+        document.getElementById('adButton').onclick = () => {
+            // Aqui chamaremos a lógica da Monetag no Passo 3
+            alert("Aqui o anúncio da Monetag será disparado!");
+        };
+    </script>
+</body>
+</html>
