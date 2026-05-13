@@ -3,49 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Mini App Monetizado</title>
+    <title>Ganhe Prêmios Diários</title>
+    
     <!-- SDK do Telegram -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
+
+    <!-- SDK da Monetag (Tag Principal) -->
+    <script src='//libtl.com/sdk.js' data-zone='11002325' data-sdk='show_11002325'></script>
+
     <style>
         body {
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #222222);
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #f4f4f9);
+            color: var(--tg-theme-text-color, #222);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
+            padding: 20px;
+            text-align: center;
         }
-        button {
-            padding: 10px 20px;
-            background-color: var(--tg-theme-button-color, #3390ec);
+        .container {
+            background: var(--tg-theme-secondary-bg-color, #ffffff);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        p { font-size: 16px; opacity: 0.8; margin-bottom: 30px; }
+        .btn {
+            background-color: var(--tg-theme-button-color, #0088cc);
             color: var(--tg-theme-button-text-color, #ffffff);
             border: none;
-            border-radius: 8px;
+            padding: 18px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
+            width: 100%;
+            transition: transform 0.1s ease;
         }
+        .btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
-    <h1>Bem-vindo ao Mini App</h1>
-    <p>Clique abaixo para ver uma oferta (anúncio):</p>
-    
-    <button id="adButton">Ganhar Recompensa</button>
+    <div class="container">
+        <h1>🎁 Sua Recompensa</h1>
+        <p>Clique no botão abaixo para resgatar seus pontos diários.</p>
+        
+        <button class="btn" id="claimBtn">RESGATAR AGORA</button>
+    </div>
 
     <script>
         // Inicializa o WebApp do Telegram
         const tg = window.Telegram.WebApp;
         tg.ready();
-        tg.expand(); // Expande o app para a tela cheia
+        tg.expand();
 
-        // Função para simular a chamada da Monetag
-        document.getElementById('adButton').onclick = () => {
-            // Aqui chamaremos a lógica da Monetag no Passo 3
-            alert("Aqui o anúncio da Monetag será disparado!");
+        // Configuração do Interstitial (conforme os parâmetros que você passou)
+        function dispararAnuncio() {
+            if (typeof show_11002325 === 'function') {
+                show_11002325({
+                    type: 'inApp',
+                    inAppSettings: {
+                        frequency: 2,
+                        capping: 0.1,
+                        interval: 30,
+                        timeout: 5,
+                        everyPage: false
+                    }
+                });
+            }
+        }
+
+        // Ação ao clicar no botão
+        document.getElementById('claimBtn').onclick = () => {
+            // Vibração no celular (feedback tátil)
+            tg.HapticFeedback.impactOccurred('medium');
+            
+            // Chama o anúncio da Monetag
+            dispararAnuncio();
+
+            // Mensagem opcional para o usuário
+            tg.showPopup({
+                title: 'Processando...',
+                message: 'Aguarde o carregamento do anúncio para validar seus pontos.',
+                buttons: [{type: 'ok'}]
+            });
         };
     </script>
 </body>
