@@ -3,98 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganhe Prêmios Diários</title>
+    <title>Ganhe Prêmios</title>
     
     <!-- SDK do Telegram -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- SDK da Monetag (Tag Principal) -->
-    <script src='//libtl.com/sdk.js' data-zone='11002325' data-sdk='show_11002325'></script>
+    <!-- SDK da Monetag com Configuração Automática (data-auto) -->
+    <!-- Formato: frequency / capping / interval / timeout / everyPage -->
+    <script 
+        src='//libtl.com/sdk.js' 
+        data-zone='11002325' 
+        data-sdk='show_11002325' 
+        data-auto="2/0.1/30/5/0">
+    </script>
 
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--tg-theme-bg-color, #f4f4f9);
-            color: var(--tg-theme-text-color, #222);
+            font-family: sans-serif;
+            background-color: var(--tg-theme-bg-color, #f0f0f0);
+            color: var(--tg-theme-text-color, #000);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
-            padding: 20px;
-            text-align: center;
         }
-        .container {
-            background: var(--tg-theme-secondary-bg-color, #ffffff);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        h1 { font-size: 24px; margin-bottom: 10px; }
-        p { font-size: 16px; opacity: 0.8; margin-bottom: 30px; }
         .btn {
-            background-color: var(--tg-theme-button-color, #0088cc);
+            background-color: var(--tg-theme-button-color, #248bcf);
             color: var(--tg-theme-button-text-color, #ffffff);
             border: none;
-            padding: 18px 30px;
-            border-radius: 12px;
+            padding: 15px 30px;
+            border-radius: 10px;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
-            width: 100%;
-            transition: transform 0.1s ease;
         }
-        .btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>🎁 Sua Recompensa</h1>
-        <p>Clique no botão abaixo para resgatar seus pontos diários.</p>
-        
-        <button class="btn" id="claimBtn">RESGATAR AGORA</button>
+    <div style="text-align: center; padding: 20px;">
+        <h1>🎁 Bem-vindo!</h1>
+        <p>Aguarde 5 segundos para o anúncio carregar automaticamente.</p>
+        <button class="btn" id="checkBtn">Verificar Saldo</button>
     </div>
 
     <script>
-        // Inicializa o WebApp do Telegram
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // Configuração do Interstitial (conforme os parâmetros que você passou)
-        function dispararAnuncio() {
-            if (typeof show_11002325 === 'function') {
-                show_11002325({
-                    type: 'inApp',
-                    inAppSettings: {
-                        frequency: 2,
-                        capping: 0.1,
-                        interval: 30,
-                        timeout: 5,
-                        everyPage: false
-                    }
-                });
-            }
-        }
-
-        // Ação ao clicar no botão
-        document.getElementById('claimBtn').onclick = () => {
-            // Vibração no celular (feedback tátil)
+        // Agora não precisamos chamar a função show_... aqui dentro!
+        // O data-auto vai tentar abrir o anúncio sozinho 5 segundos após abrir o app.
+        
+        document.getElementById('checkBtn').onclick = () => {
             tg.HapticFeedback.impactOccurred('medium');
-            
-            // Chama o anúncio da Monetag
-            dispararAnuncio();
-
-            // Mensagem opcional para o usuário
-            tg.showPopup({
-                title: 'Processando...',
-                message: 'Aguarde o carregamento do anúncio para validar seus pontos.',
-                buttons: [{type: 'ok'}]
-            });
+            alert("Se o anúncio não apareceu ainda, aguarde os 5 segundos do timer automático.");
         };
     </script>
 </body>
